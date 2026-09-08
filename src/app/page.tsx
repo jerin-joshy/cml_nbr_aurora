@@ -2,6 +2,7 @@ import { getOrgSettings } from "@/lib/org-settings";
 import { FeastShell } from "@/components/feast/feast-shared";
 import { FeastLanding } from "@/components/feast/feast-landing";
 
+export const dynamic = 'force-dynamic';
 export default async function Home() {
   const org = await getOrgSettings();
   return (
