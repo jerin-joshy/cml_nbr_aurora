@@ -43,7 +43,7 @@ export const theme = {
     border: "1px solid rgba(255,255,255,0.9)",
     backdropFilter: "blur(16px) saturate(180%)",
   } as React.CSSProperties,
-  pageBg: "linear-gradient(165deg, #ECE4FF 0%, #F6E5F6 46%, #FFEADC 100%)",
+  pageBg: "linear-gradient(145deg, #b4b3b3 0%, #9099ae 46%, #636363 100%)",
   navBg: "rgba(255,255,255,0.55)",
 };
 

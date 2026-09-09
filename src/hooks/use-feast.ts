@@ -9,7 +9,7 @@ import type { Stage } from "@/types";
 // are derived purely from feast.type, which every org shares.
 const FEAST_TYPE_CONFIG: Record<string, { icon: string; tint: [string, string]; accent: string }> = {
   literature: { icon: "PenTool", tint: ["#6B46FF", "#A855F7"], accent: "#A855F7" },
-  arts: { icon: "Palette", tint: ["#A855F7", "#EC4899"], accent: "#EC4899" },
+  arts: { icon: "Palette", tint: ["#1E1B4B", "#312E81"], accent: "#6366F1" },
   sports: { icon: "Zap", tint: ["#16A34A", "#22D3EE"], accent: "#22D3EE" },
   general: { icon: "Sparkles", tint: ["#F59E0B", "#EC4899"], accent: "#F59E0B" },
 };

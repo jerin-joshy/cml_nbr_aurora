@@ -23,11 +23,15 @@ export function FeastLanding({ org }: { org: OrgSettings }) {
           className="mt-1 text-[32px] font-bold leading-[1.08] tracking-tight sm:text-[40px]"
           style={{ fontFamily: "var(--font-anek), sans-serif" }}
         >
-          <span style={{ color: theme.text }}>{org.org_name_en || "Feast Hub"}</span>
+          <span style={{
+              background: "linear-gradient(100deg, #fccf54, #ec485b, #f7a955)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>{org.org_name_en || "Feast Hub"}</span>
           <br />
           <span
             style={{
-              background: "linear-gradient(100deg, #F5C542, #EC4899, #A855F7)",
+              background: "linear-gradient(100deg, #ec485b, #fccf54, #c3515e)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
@@ -60,9 +64,8 @@ export function FeastLanding({ org }: { org: OrgSettings }) {
                 {/* Gradient hero strip */}
                 <div className="relative overflow-hidden px-5 pb-6 pt-5" style={{ background: `linear-gradient(150deg, ${f.tint[0]}, ${f.tint[1]} 65%, ${f.accent})` }}>
                   {/* Dotted texture overlay */}
-                  <div
-                    className="pointer-events-none absolute inset-0 opacity-[0.18]"
-                    style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1.5px)", backgroundSize: "16px 16px" }}
+                  <div className="pointer-events-none absolute inset-0 opacity-[0.18] animate-pulse" 
+                  style={{ backgroundImage: "radial-gradient(rgba(147, 156, 255, 0.9) 1px, transparent 2px)", backgroundSize: "10px 10px" }}
                   />
                   <div className="pointer-events-none absolute -top-10 -right-8 h-[160px] w-[160px] rounded-full blur-[38px]" style={{ background: "rgba(255,255,255,0.3)" }} />
                   <div className="pointer-events-none absolute -bottom-12 left-8 h-[120px] w-[120px] rounded-full blur-[32px]" style={{ background: "rgba(245,197,66,0.4)" }} />
