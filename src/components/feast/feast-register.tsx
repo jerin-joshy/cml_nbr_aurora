@@ -23,7 +23,7 @@ export function normGender(g: string | null | undefined): string | null {
 }
 
 export function TextField({ label, value, onChange, placeholder, type = "text", icon: Icon }: {
-  label: string; value: string; onChange: (v: string) => void; placeholder: string; type?: string; icon?: typeof User;
+  label: string; value: string; onChange: (v: string) => void; placeholder: string; type?: string; icon?: typeof User; className?: string;
 }) {
   return (
     <div className="mb-3">
