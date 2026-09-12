@@ -109,7 +109,7 @@ export function FeastRegister({ slug }: { slug: string }) {
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-  const [form, setForm] = useState({ name: "", houseName: "", dob: "", gender: "", phone: "" });
+  const [form, setForm] = useState({ name: "", houseName: "", dob: "", gender: "", phone: "", cmlRegNumber: "" });
   const [picked, setPicked] = useState<string[]>([]);
   const [shakhaCounts, setShakhaCounts] = useState<Record<string, number>>({});
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -154,7 +154,7 @@ export function FeastRegister({ slug }: { slug: string }) {
     })();
   }, [adminShakha, feast]);
 
-  const step1ok = !!(form.name.trim() && form.dob && form.gender);
+  const step1ok = !!(form.name.trim() && form.dob && form.gender && form.cmlRegNumber);
 
   async function submit() {
     if (!feast) return;
@@ -167,6 +167,7 @@ export function FeastRegister({ slug }: { slug: string }) {
       houseName: form.houseName,
       dob: form.dob,
       gender: form.gender,
+      cmlRegNumber: form.cmlRegNumber,
       phone: form.phone,
       feastCompetitionIds: picked,
     });
@@ -210,6 +211,7 @@ export function FeastRegister({ slug }: { slug: string }) {
         {form.dob && <SummaryRow label="Date of Birth" value={form.dob} />}
         {catSlug && <SummaryRow label="Category" value={CATEGORY_LABELS[catSlug] ?? catSlug} color={CATEGORY_COLORS[catSlug]} />}
         {form.gender && <SummaryRow label="Gender" value={form.gender.charAt(0).toUpperCase() + form.gender.slice(1)} />}
+        {form.cmlRegNumber && <SummaryRow label="CML Registration Number from Teclesia" value={form.cmlRegNumber} />}
         {form.phone && <SummaryRow label="Phone" value={form.phone} />}
         {adminShakha && <SummaryRow label="Shakha" value={adminShakha.name} />}
       </div>
@@ -249,6 +251,7 @@ export function FeastRegister({ slug }: { slug: string }) {
             <DateField label="Date of Birth" value={form.dob} onChange={(v) => set("dob", v)} />
             <CategoryPill slug={catSlug} />
             <GenderPicker value={form.gender} onChange={(v) => set("gender", v)} />
+            <TextField label="CML Teclesia Register Number" value={form.cmlRegNumber} onChange={(v) => set("cmlRegNumber", v.toUpperCase())} placeholder="e.g. CML/2026/1234" className="uppercase"/>
             <TextField label="Phone (optional)" value={form.phone} onChange={(v) => set("phone", v.replace(/\D/g, "").slice(0, 10))} placeholder="10-digit mobile" type="tel" icon={Phone} />
             {adminShakha && (
               <div className="flex items-center gap-2.5 rounded-[14px] px-3.5 py-2.5" style={{ background: theme.fillStrong, border: `1px solid ${theme.purple}22` }}>
@@ -259,7 +262,7 @@ export function FeastRegister({ slug }: { slug: string }) {
             )}
           </GlassPanel>
           <GlowBtn variant="primary" size="lg" className="w-full" disabled={!step1ok} onClick={() => setStep(1)}>Continue</GlowBtn>
-          {!step1ok && <p className="mt-2.5 text-center text-[11.5px]" style={{ color: theme.faint }}>Name, date of birth and gender are required</p>}
+          {!step1ok && <p className="mt-2.5 text-center text-[11.5px]" style={{ color: theme.faint }}>Name, date of birth, gender and registration number are required</p>}
         </div>
       )}
 
@@ -326,6 +329,7 @@ export function FeastRegister({ slug }: { slug: string }) {
             {[
               ["Name", form.name], ["House Name", form.houseName || "—"], ["Date of Birth", form.dob],
               ["Gender", form.gender.charAt(0).toUpperCase() + form.gender.slice(1)],
+              ["CML Registration Number", form.cmlRegNumber],
               ["Category", CATEGORY_LABELS[catSlug] || "—"], ["Shakha", adminShakha?.name ?? "—"],
               ...(form.phone ? [["Phone", form.phone]] : []),
             ].map(([k, v]) => (

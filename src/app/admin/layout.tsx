@@ -137,7 +137,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           {navSections.map((section, i) => (
             <div key={i}>
               {section.title && (
-                <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">{section.title} ggg</p>
+                <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">{section.title}</p>
               )}
               {section.items.map((item) => {
                 const active = isActive(item.href, pathname);

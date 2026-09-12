@@ -56,6 +56,7 @@ export interface RegInput {
   houseName?: string;
   dob: string;
   gender: string;
+  cmlRegNumber: string;
   phone?: string;
   feastCompetitionIds: string[];
 }
@@ -102,6 +103,7 @@ export async function registerParticipant(input: RegInput): Promise<RegOutput | 
         name: input.name,
         house_name: input.houseName || null,
         date_of_birth: input.dob,
+        cml_reg_number: input.cmlRegNumber,
         gender: input.gender,
         competition_category_id: category?.id ?? null,
         phone: input.phone || null,
