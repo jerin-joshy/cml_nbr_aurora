@@ -8,7 +8,7 @@ import type { Stage } from "@/types";
 // literature-feast-2026/arts-feast-2026 special case) — icon/tint/accent
 // are derived purely from feast.type, which every org shares.
 const FEAST_TYPE_CONFIG: Record<string, { icon: string; tint: [string, string]; accent: string }> = {
-  literature: { icon: "PenTool", tint: ["#6B46FF", "#A855F7"], accent: "#A855F7" },
+  literature: { icon: "PenTool", tint: ["#f0ff7f", "#ff3838"], accent: "#5e883e" },
   arts: { icon: "Palette", tint: ["#1E1B4B", "#312E81"], accent: "#6366F1" },
   sports: { icon: "Zap", tint: ["#16A34A", "#22D3EE"], accent: "#22D3EE" },
   general: { icon: "Sparkles", tint: ["#F59E0B", "#EC4899"], accent: "#F59E0B" },
@@ -117,7 +117,7 @@ export function useFeasts(options?: UseFeastsOptions) {
         .from("feasts")
         .select("*")
         .neq("status", "draft")
-        .order("start_date");
+        .order("start_date",{ascending: false});
 
       if (error) console.error("[useFeasts]", error.message);
       // A stale/cancelled effect instance (React Strict Mode's mount-unmount-
