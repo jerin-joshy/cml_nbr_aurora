@@ -164,7 +164,7 @@ export function FeastRegistrations({ slug }: { slug: string }) {
   const retry = () => { setLoadError(null); setMyShakhaId(undefined); setLoading(true); setRetryTick((t) => t + 1); };
 
   useEffect(() => {
-    if (!session?.user?.id) { setMyShakhaId(null); return; }
+    if (!session?.user?.id) { setMyShakhaId(null); router.replace("/"); return; }
     Promise.resolve(supabase.from("profiles").select("shakha_id, shakha:shakhas(name)").eq("id", session.user.id).maybeSingle())
       .then(({ data }) => {
         setMyShakhaId(data?.shakha_id ?? null);

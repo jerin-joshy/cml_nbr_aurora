@@ -125,7 +125,7 @@ export function FeastRegister({ slug }: { slug: string }) {
     });
 
   useEffect(() => {
-    if (!session?.user?.id) return;
+    if (!session?.user?.id) { router.replace("/feast/artsfeast"); return; }
     supabase.from("profiles").select("shakha_id, shakha:shakhas(id, name)").eq("id", session.user.id).maybeSingle().then(({ data }) => {
       if (!data?.shakha_id) return;
       const sh = Array.isArray(data.shakha) ? data.shakha[0] : data.shakha;

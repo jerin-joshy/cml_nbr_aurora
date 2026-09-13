@@ -429,7 +429,7 @@ export default function ParticipantsPage() {
         <select className="input max-w-xs" value={compFilter} onChange={(e) => setCompFilter(e.target.value)}>
           <option value="">All Competitions</option>
           {individualFeastComps.map((c) => (
-            <option key={c.id} value={c.id}>{c.competition.name}</option>
+            <option key={c.id} value={c.id}>{c.competition.name + " - " + (c.competition.competition_category? (c.competition.competition_category?.name + " - " + c.competition.gender):"")}</option>
           ))}
         </select>
         <div className="relative">

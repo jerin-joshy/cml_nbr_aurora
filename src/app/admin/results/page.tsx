@@ -377,7 +377,8 @@ export default function ResultsPage() {
         <select className="input max-w-xs" value={compId} onChange={(e) => setCompId(e.target.value)}>
           {feastComps.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.competition.type === "group" ? "👥 " : ""}{c.competition.name} {c.result_status === "published" ? "· Published" : ""}
+              {c.competition.type === "group" ? "👥 " : ""}{(c.competition.competition_category? (c.competition.competition_category.name + (c.competition.gender === "boy" ? "👦🏼":"👩🏻")):"") 
+              +" - " + c.competition.name} {c.result_status === "published" ? "· Published" : ""}
             </option>
           ))}
         </select>
