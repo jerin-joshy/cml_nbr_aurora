@@ -154,7 +154,7 @@ export function FeastRegister({ slug }: { slug: string }) {
     })();
   }, [adminShakha, feast]);
 
-  const step1ok = !!(form.name.trim() && form.dob && form.gender && form.cmlRegNumber);
+  const step1ok = !!(form.name.trim() && form.dob && form.gender && form.cmlRegNumber && form.cmlRegNumber.substring(0,9) == "CML/2026/");
 
   async function submit() {
     if (!feast) return;
