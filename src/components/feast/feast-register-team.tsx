@@ -62,7 +62,7 @@ export function FeastRegisterTeam({ slug }: { slug: string }) {
     setPicked([]);
     (async () => {
       const [{ data: participants }, { data: memberRows }] = await Promise.all([
-        supabase.from("participants").select("id, name, house_name").eq("feast_id", feastId).eq("shakha_id", adminShakha.id),
+        supabase.from("participants").select("id, name, house_name").eq("feast_id", feastId).eq("shakha_id", adminShakha.id).order("name", { ascending: true }),
         supabase.from("team_registration_members").select("participant_id").eq("feast_competition_id", compId),
       ]);
       const taken = new Set((memberRows ?? []).map((r) => r.participant_id));
