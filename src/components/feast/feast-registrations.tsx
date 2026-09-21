@@ -183,7 +183,7 @@ export function FeastRegistrations({ slug }: { slug: string }) {
     Promise.all([
       individualIds.length === 0
         ? Promise.resolve({ data: [] })
-        : supabase.from("participant_registrations").select("id, feast_competition_id, participant:participants(id, name, house_name, shakha_id, registration_number, gender, shakha:shakhas(name))").in("feast_competition_id", individualIds),
+        : supabase.from("participant_registrations").select("id, feast_competition_id, participant:participants(id, name, house_name, shakha_id, cml_reg_number, gender, shakha:shakhas(name))").in("feast_competition_id", individualIds),
       !myShakhaId || teamIds.length === 0
         ? Promise.resolve({ data: [] })
         : supabase.from("team_registrations").select("id, feast_competition_id, team_name, members:team_registration_members(participant:participants(name))").eq("shakha_id", myShakhaId).in("feast_competition_id", teamIds),
@@ -257,7 +257,7 @@ export function FeastRegistrations({ slug }: { slug: string }) {
   const shakhaLabel = myShakhaName ?? "Your Shakha";
 
   function downloadRegistrationsPDF() {
-    if (!feast || totalRegs === 0) return;
+    if (!feast || (totalRegs === 0 && teamRegs.length === 0)) return;
     const compById: Record<string, { name: string; catSlug: string | null }> = {};
     for (const c of feast.competitions) compById[c.id] = { name: c.name, catSlug: c.competitionCategorySlug ?? null };
 
@@ -274,6 +274,7 @@ export function FeastRegistrations({ slug }: { slug: string }) {
       .map((s) => {
         const label = s === "other" ? "Other" : CATEGORY_LABELS[s] ?? s;
         const rows = buckets[s]
+        .sort((a, b) => (a.participant?.name ?? "").localeCompare(b.participant?.name ?? ""))
           .map((r) => {
             const p = r.participant!;
             sl += 1;
@@ -285,6 +286,37 @@ export function FeastRegistrations({ slug }: { slug: string }) {
       })
       .join("");
 
+    // Build Team Registrations Table HTML
+    let teamSl = 0;
+    const teamRowsHtml = teamRegs
+    .sort((a, b) => a.team_name.localeCompare(b.team_name))
+      .map((t) => {
+        teamSl += 1;
+        const compName = compById[t.feast_competition_id]?.name ?? "";
+        const membersList = t.memberNames.length > 0 
+          ? [...t.memberNames].sort((a, b) => a.localeCompare(b)).map((m) => esc(m)).join(", ") 
+          : "—";
+        return `<tr><td class="sl">${teamSl}</td><td class="comp">${esc(compName)}</td><td class="name">${esc(t.team_name)}</td><td class="members">${membersList}</td></tr>`;
+      })
+      .join("");
+
+    const teamSectionHtml = teamRegs.length > 0 ? `
+      <div class="team-hdr">Team Registrations</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 40px;">SL</th>
+            <th>Competition</th>
+            <th>Team Name</th>
+            <th>Members</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${teamRowsHtml}
+        </tbody>
+      </table>
+    ` : "";
+
     const html = `<!doctype html><html><head><meta charset="utf-8"><title>Registrations — ${esc(shakhaLabel)}</title><style>
       @page { size: A4 portrait; margin: 16mm 14mm; }
       * { box-sizing: border-box; }
@@ -292,17 +324,20 @@ export function FeastRegistrations({ slug }: { slug: string }) {
       .hdr { text-align: center; margin-bottom: 16px; }
       .hdr .feast { font-size: 24px; font-weight: 900; color: #4C1D95; margin: 10px 0 4px; }
       .hdr .shakha { font-size: 14px; font-weight: 700; color: #333; display: inline-block; background: #f0edff; padding: 4px 12px; border-radius: 12px; }
+      .team-hdr { font-size: 16px; font-weight: 800; color: #4C1D95; margin-top: 24px; border-bottom: 2px solid #6B46FF; padding-bottom: 4px; }
       table { width: 100%; border-collapse: collapse; margin-top: 12px; }
       th, td { border: 1px solid #333; padding: 5px 6px; text-align: left; font-size: 12.5px; }
       thead th { background: #f0f0f0; font-size: 11px; text-transform: uppercase; }
       td.sl, td.bg { text-align: center; font-weight: 700; }
       td.reg { font-family: "Courier New", monospace; font-weight: 700; }
+      td.members { font-size: 11.5px; color: #222; }
       tr.cat-head td { background: #e5e0ff; font-weight: 800; text-transform: uppercase; font-size: 12px; }
       @media print { .noprint { display: none; } }
       .noprint { text-align: center; margin: 18px 0; }
       </style></head><body>
       <div class="hdr"><p class="feast">${esc(feast.name)}</p><p class="shakha">Registration of shakha ${esc(shakhaLabel)}</p></div>
-      <table><thead><tr><th>SL</th><th>Reg No</th><th>Participant Name</th><th>House Name</th><th>B/G</th><th>Competition</th></tr></thead><tbody>${sectionsHtml}</tbody></table>
+      ${sectionsHtml ? `<table><thead><tr><th>SL</th><th>Reg No</th><th>Participant Name</th><th>House Name</th><th>B/G</th><th>Competition</th></tr></thead><tbody>${sectionsHtml}</tbody></table>` : ""}
+      ${teamSectionHtml}
       <div class="noprint"><button onclick="window.print()">Print / Save as PDF</button></div>
       </body></html>`;
 
