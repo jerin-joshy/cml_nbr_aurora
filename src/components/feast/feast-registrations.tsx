@@ -279,7 +279,7 @@ export function FeastRegistrations({ slug }: { slug: string }) {
             const p = r.participant!;
             sl += 1;
             const compName = compById[r.feast_competition_id]?.name ?? "";
-            return `<tr><td class="sl">${sl}</td><td class="reg">${esc(p.registration_number ?? "—")}</td><td class="name">${esc(p.name)}</td><td class="house">${esc(p.house_name ?? "—")}</td><td class="bg">${esc(genderLetter(p.gender))}</td><td class="comp">${esc(compName)}</td></tr>`;
+            return `<tr><td class="sl">${sl}</td><td class="reg">${esc(p.cml_reg_number ?? "—")}</td><td class="name">${esc(p.name)}</td><td class="house">${esc(p.house_name ?? "—")}</td><td class="bg">${esc(genderLetter(p.gender))}</td><td class="comp">${esc(compName)}</td></tr>`;
           })
           .join("");
         return `<tr class="cat-head"><td colspan="6">${esc(label)}</td></tr>${rows}`;
